@@ -16,11 +16,6 @@ class SecurityFragment : BaseFragment<FragmentSecurityBinding>(FragmentSecurityB
 
     private val viewModel: SecurityViewModel by viewModels()
 
-
-    override fun bind() {
-
-    }
-
     override fun listener() {
         addListener()
         clearListener()
@@ -95,9 +90,8 @@ class SecurityFragment : BaseFragment<FragmentSecurityBinding>(FragmentSecurityB
 
     private fun clearPasscodeIcon() {
         viewLifecycleOwner.lifecycleScope.launch {
-            delay(100)
-
             with(binding) {
+                delay(100)
                 ivIconOne.setImageResource(R.drawable.ic_gray_circle)
                 ivIconTwo.setImageResource(R.drawable.ic_gray_circle)
                 ivIconThree.setImageResource(R.drawable.ic_gray_circle)

@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SecurityViewModel : ViewModel() {
-
     private var _securityStateState = MutableStateFlow<List<Int>>(listOf())
     val securityStateState = _securityStateState.asStateFlow()
 
@@ -27,20 +26,21 @@ class SecurityViewModel : ViewModel() {
     private fun addPasscode(code: Int) {
         viewModelScope.launch {
             val list = _securityStateState.value.toMutableList()
-            if (list.size > 3) {
+            if(list.size <= 3){
+                list.add(code)
+            } else {
                 verifyPasscode()
                 list.clear()
-            } else {
-                list.add(code)
             }
             _securityStateState.value = list
+
         }
     }
 
     private fun clearPasscode() {
         viewModelScope.launch {
             val list = _securityStateState.value.toMutableList()
-            if(list.isNotEmpty()){
+            if(list.isNotEmpty() && list.size != 4){
                 list.removeLast()
                 _securityStateState.value = list
             }
@@ -53,13 +53,7 @@ class SecurityViewModel : ViewModel() {
             _verifyState.value = _securityStateState.value == correctPasscode
         }
     }
-
 }
 
-sealed class SecurityEvent {
-    data class AddPasscode(val code: Int) : SecurityEvent()
-    data object ClearPasscode : SecurityEvent()
-    data object VerifyPasscode : SecurityEvent()
-}
 
 
